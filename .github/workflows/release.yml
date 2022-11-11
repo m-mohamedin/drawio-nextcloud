@@ -29,6 +29,7 @@ jobs:
         exclusions: '*.git*'
     - name: Generate signature
       run: |
+        sleep 60
         echo "${{ secrets.NEXTCLOUD_KEY }}" > drawio.key
         export signature=`openssl dgst -sha512 -sign drawio.key ${{ steps.vars.outputs.tar_file_name }} | openssl base64`
         export requestJSON="{\"download\":\"https://github.com/jgraph/drawio-nextcloud/releases/download/${GITHUB_REF##*/}/drawio-${GITHUB_REF##*/}.tar.gz\", \"signature\": \"${signature//$'\n'/\\n}\"}"
