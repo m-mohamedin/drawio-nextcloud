@@ -26,3 +26,8 @@ jobs:
         filename: ${{ steps.vars.outputs.tar_file_name }}
         path: drawio
         exclusions: '*.git* /*node_modules/* .editorconfig'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: ${{ steps.vars.outputs.zip_file_name }},${{ steps.vars.outputs.tar_file_name }}
+        token: ${{ secrets.GITHUB_TOKEN }}
