@@ -30,7 +30,10 @@ jobs:
     - name: Generate signature
       run: |
         echo "${{ secrets.NEXTCLOUD_KEY }}" > drawio.key
-        signature=`openssl dgst -sha512 -sign drawio.key ${{ steps.vars.outputs.tar_file_name }} | openssl base64`
+        export signature=`openssl dgst -sha512 -sign drawio.key ${{ steps.vars.outputs.tar_file_name }} | openssl base64`
+        export releaseUrl="https://github.com/jgraph/drawio-nextcloud/releases/download/${GITHUB_REF##*/}/drawio-${GITHUB_REF##*/}.tar.gz"
+        echo "${signature}"
+        echo "${releaseUrl}"
         curl -X POST -u "user:password" https://apps.nextcloud.com/api/v1/apps/releases -H "Content-Type: application/json" -d '{"download":"https://github.com/jgraph/drawio-nextcloud/releases/download/${GITHUB_REF##*/}/drawio-${GITHUB_REF##*/}.tar.gz", "signature": "${signature}"}'
         
 #    - name: Upload Release
