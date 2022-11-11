@@ -26,9 +26,14 @@ jobs:
         type: 'zip'
         filename: ${{ steps.vars.outputs.zip_file_name }}
         path: drawio
-        exclusions: '*.git* /*node_modules/* .editorconfig'
-    - name: Upload Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: ${{ steps.vars.outputs.zip_file_name }},${{ steps.vars.outputs.tar_file_name }}
-        token: ${{ secrets.GITHUB_TOKEN }}
+        exclusions: '*.git*'
+    - name: Generate signature
+      run: |
+        echo "${{ secrets.NEXTCLOUD_KEY }}" > drawio.key
+        openssl dgst -sha512 -sign drawio.key ${{ steps.vars.outputs.tar_file_name }} | openssl base64
+        
+#    - name: Upload Release
+#      uses: ncipollo/release-action@v1
+#      with:
+#        artifacts: ${{ steps.vars.outputs.zip_file_name }},${{ steps.vars.outputs.tar_file_name }}
+#        token: ${{ secrets.GITHUB_TOKEN }}
