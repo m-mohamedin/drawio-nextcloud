@@ -19,7 +19,7 @@ jobs:
         type: 'tar'
         filename: ${{ steps.vars.outputs.tar_file_name }}
         path: drawio
-        exclusions: '*.git* /*node_modules/* .editorconfig'
+        exclusions: '*.git*'
     - name: Archive Release (zip)
       uses: thedoctor0/zip-release@main
       with:
